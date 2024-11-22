@@ -241,6 +241,15 @@ mlx5_tx_handle_completion(struct mlx5_txq_data *__rte_restrict txq,
 			rte_pmd_mlx5_trace_tx_complete(txq->port_id, txq->idx,
 						       wqe_id, ts);
 		}
+		{
+			uint64_t ts = rte_be_to_cpu_64(cqe->timestamp);
+			uint16_t wqe_id = rte_be_to_cpu_16(cqe->wqe_counter);
+
+			if (txq->rt_timestamp)
+				ts = mlx5_txpp_convert_rx_ts(NULL, ts);
+			rte_pmd_mlx5_anlab_trace_tx_complete(txq->port_id, txq->idx,
+						       wqe_id, ts);
+		}
 		ring_doorbell = true;
 		++txq->cq_ci;
 		last_cqe = cqe;

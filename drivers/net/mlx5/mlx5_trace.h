@@ -69,6 +69,16 @@ RTE_TRACE_POINT_FP(
 	rte_trace_point_emit_u16(wqe_id);
 )
 
+// ANLAB Customized traces
+typedef void (*mlx5_tx_push_cb)(const struct rte_mbuf *mbuf, uint16_t wqe_id);
+typedef void (*mlx5_tx_complete_cb)(uint16_t port_id, uint16_t queue_id, uint16_t wqe_id, uint64_t ts);
+
+__rte_experimental void rte_pmd_mlx5_anlab_trace_set_tx_push(mlx5_tx_push_cb cb);
+__rte_experimental void rte_pmd_mlx5_anlab_trace_set_tx_complete(mlx5_tx_complete_cb cb);
+
+void rte_pmd_mlx5_anlab_trace_tx_push(const struct rte_mbuf *mbuf, uint16_t wqe_id);
+void rte_pmd_mlx5_anlab_trace_tx_complete(uint16_t port_id, uint16_t queue_id, uint16_t wqe_id, uint64_t ts);
+
 #ifdef __cplusplus
 }
 #endif

@@ -23,3 +23,26 @@ RTE_TRACE_POINT_REGISTER(rte_pmd_mlx5_trace_tx_push,
 
 RTE_TRACE_POINT_REGISTER(rte_pmd_mlx5_trace_tx_complete,
 	pmd.net.mlx5.tx.complete)
+
+mlx5_tx_push_cb rte_pmd_mlx5_anlab_trace_tx_push_cb = NULL;
+mlx5_tx_complete_cb rte_pmd_mlx5_anlab_trace_tx_complete_cb = NULL;
+
+void rte_pmd_mlx5_anlab_trace_set_tx_push(mlx5_tx_push_cb cb)
+{
+	rte_pmd_mlx5_anlab_trace_tx_push_cb = cb;
+}
+void rte_pmd_mlx5_anlab_trace_set_tx_complete(mlx5_tx_complete_cb cb)
+{
+	rte_pmd_mlx5_anlab_trace_tx_complete_cb = cb;
+}
+
+void rte_pmd_mlx5_anlab_trace_tx_push(const struct rte_mbuf *mbuf, uint16_t wqe_id)
+{
+	if (rte_pmd_mlx5_anlab_trace_tx_push_cb)
+		rte_pmd_mlx5_anlab_trace_tx_push_cb(mbuf, wqe_id);
+}
+void rte_pmd_mlx5_anlab_trace_tx_complete(uint16_t port_id, uint16_t queue_id, uint16_t wqe_id, uint64_t ts)
+{
+	if (rte_pmd_mlx5_anlab_trace_tx_complete_cb)
+		rte_pmd_mlx5_anlab_trace_tx_complete_cb(port_id, queue_id, wqe_id, ts);
+}

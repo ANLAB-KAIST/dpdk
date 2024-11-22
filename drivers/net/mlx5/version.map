@@ -4,7 +4,9 @@ DPDK_25 {
 
 EXPERIMENTAL {
 	global:
-
+	# added in 24.11
+	rte_pmd_mlx5_anlab_trace_set_tx_push;
+	rte_pmd_mlx5_anlab_trace_set_tx_complete;
 	# added in 20.02
 	rte_pmd_mlx5_get_dyn_flag_names;
 	# added in 20.11
